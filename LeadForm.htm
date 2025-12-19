@@ -1,4 +1,4 @@
-Merge Event Web-To-Lead Draft.
+Merge Event Web-To-Lead Draft
 
 
 <!--  ----------------------------------------------------------------------  -->
@@ -97,7 +97,7 @@ Merge Event Web-To-Lead Draft.
 <input type="text" id="zip" name="zip" hidden>
 
 <div class="form-group">
-  <label class="label-style">CONTRACTING AMOUNT</label>
+  <label class="label-style">CONTRACTING ACCOUNT</label>
   <input id="00NWK000003vMDw" maxlength="255" name="00NWK000003vMDw" type="text">
 </div>
 
@@ -140,13 +140,18 @@ Merge Event Web-To-Lead Draft.
 
 <div class="form-group">
   <label class="label-style">PROGRAM START DATE</label>
-  <input id="00NWK000003vPw9" name="00NWK000003vPw9" type="text">
+  <!--<input id="program_start_date" name="00NWK000003vPw9" type="date">-->
+    <input type="date" id="program_start_ui">
 </div>
 
 <div class="form-group">
   <label class="label-style">PROGRAM END DATE</label>
-  <input id="00NWK000003vRMj" name="00NWK000003vRMj" type="text">
+  <!--<input id="program_end_date" name="00NWK000003vRMj" type="date">-->
+  <input type="date" id="program_end_ui">
 </div>
+
+<input type="hidden" id="sf_program_start" name="00NWK000003vPw9">
+<input type="hidden" id="sf_program_end" name="00NWK000003vRMj">
 
 <div class="form-group">
   <label class="label-style">BUDGET</label>
@@ -251,7 +256,21 @@ addressInput.addEventListener('keydown', (e) => {
   });
 });
 
+// Format date fields to accept in Salesforce
+document.querySelector('form').addEventListener('submit', function () {
 
+  function toSalesforceDate(value) {
+    if (!value) return '';
+    const [y, m, d] = value.split('-');
+    return `${m}/${d}/${y}`;
+  }
+
+  document.getElementById('sf_program_start').value =
+    toSalesforceDate(document.getElementById('program_start_ui').value);
+
+  document.getElementById('sf_program_end').value =
+    toSalesforceDate(document.getElementById('program_end_ui').value);
+});
 
 </script>
 
@@ -419,6 +438,7 @@ input[type="tel"]:focus {
 /* Inputs & Selects */
 input[type="text"],
 input[type="email"],
+input[type="date"],
 select {
   font-family: "Poppins", sans-serif;
   font-size: 12px;
@@ -502,7 +522,4 @@ select {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-
-
-
 </style>
